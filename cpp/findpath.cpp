@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <math.h>
 
 #define DEBUG_LISTS 0
 #define DEBUG_LIST_LENGTHS_ONLY 0
@@ -25,7 +26,7 @@ using namespace std;
 const int MAP_WIDTH = 20;
 const int MAP_HEIGHT = 20;
 
-int map[ MAP_WIDTH * MAP_HEIGHT ] = 
+int world_map[ MAP_WIDTH * MAP_HEIGHT ] = 
 {
 
 // 0001020304050607080910111213141516171819
@@ -56,7 +57,6 @@ int map[ MAP_WIDTH * MAP_HEIGHT ] =
 
 int GetMap( int x, int y )
 {
-
 	if( x < 0 ||
 	    x >= MAP_WIDTH ||
 		 y < 0 ||
@@ -66,7 +66,7 @@ int GetMap( int x, int y )
 		return 9;	 
 	}
 
-	return map[(y*MAP_WIDTH)+x];
+	return world_map[(y*MAP_WIDTH)+x];
 }
 
 
@@ -122,11 +122,7 @@ void MapSearchNode::PrintNodeInfo()
 
 float MapSearchNode::GoalDistanceEstimate( MapSearchNode &nodeGoal )
 {
-	float xd = float( ( (float)x - (float)nodeGoal.x ) );
-	float yd = float( ( (float)y - (float)nodeGoal.y) );
-
-	return xd + yd;
-
+	return fabsf(x - nodeGoal.x) + fabsf(y - nodeGoal.y);	
 }
 
 bool MapSearchNode::IsGoal( MapSearchNode &nodeGoal )
